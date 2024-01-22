@@ -20,11 +20,11 @@ totaltext_textspotting_test.pipeline = _base_.test_pipeline
 
 # multi dataset
 train_list = [
-    _base_.synthtext,  # 858,750 train image
-    _base_.ctw1500,    # 1,000 train image
-    _base_.totaltext,  # 1,255 train image
-    _base_.icdar2015,  # 1,000 train image
-    _base_.cocotextv2, # 19,039 train image
+    _base_.synthtext_textspotting_train,  # 858,750 train image
+    _base_.ctw1500_textspotting_train,    # 1,000 train image
+    _base_.totaltext_textspotting_train,  # 1,255 train image
+    _base_.icdar2015_textspotting_train,  # 1,000 train image
+    _base_.cocotextv2_textspotting_train, # 19,039 train image
 ]
 
 train_list = [
