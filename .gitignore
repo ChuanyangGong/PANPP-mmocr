@@ -1,5 +1,6 @@
 # Project ignore
-data/
+!data/dict
+/data
 work_dirs/
 
 # Byte-compiled / optimized / DLL files
