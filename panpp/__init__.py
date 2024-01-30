@@ -1,3 +1,3 @@
-from models import *
-from metric import *
-from datasets import *
+from .models import *
+from .metric import *
+from .datasets import *
