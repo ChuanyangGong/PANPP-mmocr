@@ -216,7 +216,7 @@ class E2EOneMinusNEDIOUMetric(BaseMetric):
         return np.where(array)[0]
 
     def _get_character_list(self, dict_file):
-        _dict = set() if os.path.exists(dict_file) else None
+        _dict = set() if dict_file is not None and os.path.exists(dict_file) else None
         if _dict is not None:
             for line_num, line in enumerate(list_from_file(dict_file)):
                 line = line.strip('\r\n')
