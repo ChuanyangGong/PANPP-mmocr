@@ -48,23 +48,30 @@ The official implementation of the paper can be found [here](https://github.com/
 ## Dataset Preparation
 1. You can prepare the datasets using mmocr dataset preparation tools. Please refer to [dataset prepare](https://mmocr.readthedocs.io/en/latest/user_guides/dataset_prepare.html#downloading-datasets-and-converting-format) and [dataset_preparer](https://mmocr.readthedocs.io/en/latest/user_guides/data_prepare/dataset_preparer.html) for more details.
     ```commandline
+    cd ../../
     # ctw1500
-    python ../../tools/dataset_converters/prepare_dataset.py ctw1500 --task textspotting --overwrite-cfg
+    python tools/dataset_converters/prepare_dataset.py ctw1500 --task textspotting --overwrite-cfg
     
     # icdar2015
-    python ../../tools/dataset_converters/prepare_dataset.py icdar2015 --task textspotting --overwrite-cfg
+    python tools/dataset_converters/prepare_dataset.py icdar2015 --task textspotting --overwrite-cfg
     
     # synthtext
-    python ../../tools/dataset_converters/prepare_dataset.py synthtext --task textspotting --overwrite-cfg
+    python tools/dataset_converters/prepare_dataset.py synthtext --task textspotting --overwrite-cfg
     
     # totaltext
-    python ../../tools/dataset_converters/prepare_dataset.py totaltext --task textspotting --overwrite-cfg
+    python tools/dataset_converters/prepare_dataset.py totaltext --task textspotting --overwrite-cfg
     
     # cocotextv2
-    python ../../tools/dataset_converters/prepare_dataset.py cocotextv2 --task textspotting --overwrite-cfg
+    python tools/dataset_converters/prepare_dataset.py cocotextv2 --task textspotting --overwrite-cfg
     ```
     
-    **Note:** Ensure that the working directory is `PANPP-mmocr` when executing the above commands. MMOCR also support other datasets, please refer to [datasetzoo](https://mmocr.readthedocs.io/en/latest/user_guides/data_prepare/datasetzoo.html) for more details.
+    **Note:** Ensure that the working directory is `mmocr` when executing the above commands. MMOCR also support other datasets, please refer to [datasetzoo](https://mmocr.readthedocs.io/en/latest/user_guides/data_prepare/datasetzoo.html) for more details.
+    
+    Then, link the dataset to the `PANPP-mmocr`.
+   ```commandline
+   cd projects/PANPP-mmocr
+   ln -s ../../data ./data
+   ```
 
     Finally, your directory structure should look like this:
     ```
@@ -101,3 +108,16 @@ The official implementation of the paper can be found [here](https://github.com/
 3. Customizing Character Sets
    - If your custom dataset involves non-English characters or you wish to modify the character set, it's essential to provide your own character set file. Refer to `dicts/english_characters.txt` for an example. Ensure that your custom character set file accurately represents the characters present in your dataset.
 
+## Training
+1. To train on multiple GPUs, e.g. 2 GPUs, run the following command:
+   ```commandline
+   ../../tools/dist_train.sh config/panpp/panpp_resnet18_fpem-ffm_300k_en-joint-train.py 2 --auto-scale-lr
+   ```
+2. To resume training from a checkpoint, use the following command:
+   ```commandline
+   ../../tools/dist_train.sh config/panpp/panpp_resnet18_fpem-ffm_300k_en-joint-train.py 2 --auto-scale-lr --resume
+   ```
+3. If you intend to pretrain a model and fine-tune it afterward, load the pre-trained model in the fine-tuning configuration. Add the `load_from` parameter in the config file to achieve this. For example, in `config/panpp/panpp_resnet18_fpem-ffm_14k_ic15.py`:
+   ```python
+   load_from = 'your_pretrained_model.pth'
+   ```
